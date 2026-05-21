@@ -32,8 +32,14 @@ export async function registerServiceWorker() {
   }
 
   try {
-    const registration = await navigator.serviceWorker.register('/sw.js', {
-      scope: '/',
+    // Gunakan BASE_URL Vite agar path SW sesuai di semua environment
+    // - Dev  : /sw.js
+    // - Prod (GitHub Pages): /submision-intermediate/sw.js
+    const swPath = import.meta.env.BASE_URL + 'sw.js';
+    const swScope = import.meta.env.BASE_URL;
+
+    const registration = await navigator.serviceWorker.register(swPath, {
+      scope: swScope,
     });
     console.info('[PushNotif] Service Worker berhasil didaftarkan:', registration.scope);
     return registration;

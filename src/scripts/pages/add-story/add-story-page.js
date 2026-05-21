@@ -64,7 +64,7 @@ export default class AddStoryPage {
                      [KRITERIA 3 - BASIC & ADVANCE] Foto: Upload atau Kamera
                      ====================================================== -->
                 <div class="form-group">
-                  <label class="form-label">
+                  <label for="photo-file" class="form-label">
                     Foto Cerita <span class="form-required" aria-hidden="true">*</span>
                   </label>
 
@@ -177,7 +177,7 @@ export default class AddStoryPage {
               <!-- ===== Kolom Kanan: Peta Pilih Lokasi ===== -->
               <div class="add-story-map-col">
                 <div class="form-group">
-                  <label class="form-label">
+                  <label for="location-map" class="form-label">
                     Lokasi <span class="form-hint-inline">(Opsional — klik peta untuk memilih)</span>
                   </label>
 

@@ -26,6 +26,7 @@ export default class FavoritePage {
           <!-- [KRITERIA SKILLED] Interaktivitas: Search dan Sort -->
           <div class="filter-controls" style="display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 250px;">
+              <label for="search-favorite" class="form-label">Cari Cerita</label>
               <input 
                 type="text" 
                 id="search-favorite" 
@@ -35,6 +36,7 @@ export default class FavoritePage {
               />
             </div>
             <div>
+              <label for="sort-favorite" class="form-label">Urutkan</label>
               <select id="sort-favorite" class="form-input" aria-label="Urutkan cerita favorit">
                 <option value="newest">Terbaru</option>
                 <option value="oldest">Terlama</option>

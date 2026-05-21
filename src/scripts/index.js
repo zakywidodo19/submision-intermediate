@@ -114,31 +114,58 @@ async function initNotificationToggle() {
     toggleBtn.setAttribute('aria-busy', 'true');
 
     try {
-      const subscribed = await isCurrentlySubscribed();
-
-      if (subscribed) {
-        // ── UNSUBSCRIBE ──────────────────────────────────────
-        const registration = await navigator.serviceWorker.ready;
-        const subscription = await registration.pushManager.getSubscription();
-
-        if (subscription) {
-          // Kabari server terlebih dahulu
-          try {
-            const token = localStorage.getItem('authToken');
-            if (token) await unsubscribeNotification(subscription);
-          } catch (err) {
-            console.warn('[Notif] Gagal unsubscribe di server:', err);
-          }
-          // Hapus subscription di browser
-          await unsubscribePushNotification();
+      // ── CEK PERMISSION DULU ──────────────────────────────────
+      // Jika permission belum diberikan ('default'), minta izin terlebih dahulu
+      // SEBELUM menunggu serviceWorker.ready (agar dialog pasti muncul)
+      if (Notification.permission === 'default') {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          showNotifToast('⚠️ Izin notifikasi ditolak.', 'warn');
+          await updateToggleButtonState(toggleBtn);
+          return;
         }
+      }
 
+      if (Notification.permission === 'denied') {
+        showNotifToast('🚫 Notifikasi diblokir oleh browser. Ubah izin di pengaturan situs.', 'warn');
+        await updateToggleButtonState(toggleBtn);
+        return;
+      }
+
+      // Pastikan SW sudah siap (dengan timeout 10 detik)
+      let registration = null;
+      try {
+        const swReady = new Promise((resolve, reject) => {
+          const timer = setTimeout(() => reject(new Error('SW timeout')), 10000);
+          navigator.serviceWorker.ready.then((reg) => {
+            clearTimeout(timer);
+            resolve(reg);
+          });
+        });
+        registration = await swReady;
+      } catch {
+        showNotifToast('❌ Service Worker belum siap. Muat ulang halaman.', 'error');
+        return;
+      }
+
+      // Cek status subscription saat ini langsung dari registration
+      const existingSubscription = await registration.pushManager.getSubscription();
+
+      if (existingSubscription) {
+        // ── UNSUBSCRIBE ──────────────────────────────────────
+        try {
+          const token = localStorage.getItem('authToken');
+          if (token) await unsubscribeNotification(existingSubscription);
+        } catch (err) {
+          console.warn('[Notif] Gagal unsubscribe di server:', err);
+        }
+        await unsubscribePushNotification();
         showNotifToast('🔕 Notifikasi dinonaktifkan.');
       } else {
         // ── SUBSCRIBE ────────────────────────────────────────
         const subscription = await subscribePushNotification();
         if (!subscription) {
-          showNotifToast('⚠️ Izin notifikasi ditolak atau tidak tersedia.', 'warn');
+          showNotifToast('⚠️ Gagal membuat subscription notifikasi.', 'warn');
           return;
         }
 
