@@ -1,18 +1,7 @@
-APP_URL=http://localhost:5173
+Nama: Zaky Widodo
 
-# [KRITERIA 2 - PETA DIGITAL]
-# Map service yang digunakan: Leaflet.js dengan tile layer berikut:
-#
-# 1. OpenStreetMap  — TIDAK memerlukan API key (open source)
-#    URL: https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
-#
-# 2. CartoDB Positron — TIDAK memerlukan API key (free tier)
-#    URL: https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png
-#
-# 3. Esri World Imagery (Satelit) — TIDAK memerlukan API key (public)
-#    URL: https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
-#
-# MAP_SERVICE_API_KEY=tidak-diperlukan
+Repository:
+https://github.com/zakywidodo19/submision-intermediate
 
-# Story API
-# Base URL: https://story-api.dicoding.dev/v1
+Deployment:
+https://zakywidodo19.github.io/submision-intermediate/
