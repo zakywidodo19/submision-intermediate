@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CeritaKita — Platform berbagi cerita perjalanan, pengalaman hidup, dan momen berharga dari seluruh Indonesia." />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="manifest" href="/app.webmanifest" />
+
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>CeritaKita — Berbagi Cerita, Inspirasi Dunia</title>
+
+    <!-- [KRITERIA 1 - SPA] Script dimuat sebagai module ES -->
+    <script type="module" src="/scripts/index.js"></script>
+  </head>
+  <body>
+    <!-- Skip to content (aksesibilitas) -->
+    <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+
+    <!-- Header & Navigasi -->
+    <header id="main-header" class="main-header-wrapper">
+      <div class="main-header container">
+        <!-- Brand Logo -->
+        <a class="brand-name" href="#/" aria-label="CeritaKita — Kembali ke beranda">
+          <span class="brand-icon" aria-hidden="true">📖</span>
+          CeritaKita
+        </a>
+
+        <!-- [KRITERIA 1 - SPA] Navigasi SPA menggunakan hash routing (#/) -->
+        <nav id="navigation-drawer" class="navigation-drawer" aria-label="Navigasi utama">
+          <ul id="nav-list" class="nav-list">
+            <li>
+              <a href="#/" class="nav-link" id="nav-home">Beranda</a>
+            </li>
+            <li>
+              <a href="#/favorites" class="nav-link" id="nav-favorites">Favorit</a>
+            </li>
+            <li>
+              <a href="#/about" class="nav-link" id="nav-about">Tentang</a>
+            </li>
+          </ul>
+
+          <!-- [KRITERIA 1] Tombol auth terpisah di navigasi -->
+          <div class="auth-nav" id="auth-nav">
+            <a href="#/login" class="btn-nav btn-nav--login" id="nav-login">Masuk</a>
+            <a href="#/register" class="btn-nav btn-nav--register" id="nav-register">Daftar</a>
+          </div>
+        </nav>
+
+        <!-- [PWA] Tombol Install App -->
+        <button
+          id="btn-install-app"
+          class="btn btn-outline btn-sm install-btn"
+          type="button"
+          aria-label="Install Aplikasi"
+          title="Install CeritaKita"
+          hidden
+        >
+          <span aria-hidden="true">⬇️</span>
+          <span class="install-btn-label">Install App</span>
+        </button>
+
+        <!-- [PUSH NOTIFICATION] Tombol toggle enable/disable notifikasi -->
+        <button
+          id="btn-notif-toggle"
+          class="notif-toggle-btn notif-btn--off"
+          type="button"
+          aria-label="Aktifkan push notification"
+          aria-pressed="false"
+          title="Toggle Push Notification"
+        >
+          <span aria-hidden="true">🔕</span>
+          <span class="notif-btn-label">Aktifkan Notifikasi</span>
+        </button>
+
+        <!-- Hamburger button untuk mobile -->
+        <button
+          id="drawer-button"
+          class="drawer-button"
+          aria-label="Buka menu navigasi"
+          aria-expanded="false"
+          aria-controls="navigation-drawer"
+        >
+          <span class="hamburger" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
+    </header>
+
+    <!-- [KRITERIA 1 - SPA] Konten halaman di-render di sini tanpa reload -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <!-- Konten halaman akan di-inject oleh JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer" class="main-footer">
+      <div class="container">
+        <div class="footer-content">
+          <span class="footer-brand">
+            <span aria-hidden="true">📖</span> CeritaKita
+          </span>
+          <p class="footer-copy">&copy; 2025 CeritaKita. Hak cipta dilindungi.</p>
+          <nav aria-label="Navigasi footer">
+            <ul class="footer-links">
+              <li><a href="#/" id="footer-home">Beranda</a></li>
+              <li><a href="#/about" id="footer-about">Tentang</a></li>
+              <li><a href="#/login" id="footer-login">Masuk</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
