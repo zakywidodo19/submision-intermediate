@@ -5,7 +5,7 @@
 //   - notificationclick: navigasi ke halaman beranda / story detail
 // ============================================================
 
-const SW_VERSION = 'cerITAKITA-sw-v2';
+const SW_VERSION = 'cerITAKITA-sw-v3';
 const CACHE_NAME = `ceritakita-app-shell-${SW_VERSION}`;
 
 // Aset yang akan disimpan di cache saat SW diinstall (App Shell)
@@ -59,26 +59,44 @@ self.addEventListener('fetch', (event) => {
     return; // Biarkan browser yang menanganinya
   }
 
-  // Stale-while-revalidate untuk resource selain API
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      // Ambil versi terbaru dari jaringan
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        // Simpan versi baru ke cache untuk penggunaan berikutnya
-        if (networkResponse && networkResponse.status === 200) {
+      // 1. Jika ada di cache, kembalikan segera (dan perbarui di background)
+      if (cachedResponse) {
+        event.waitUntil(
+          fetch(event.request).then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, networkResponse);
+              });
+            }
+          }).catch(() => {
+            // Abaikan error background fetch saat offline
+          })
+        );
+        return cachedResponse;
+      }
+
+      // 2. Jika tidak ada di cache, coba fetch dari network
+      return fetch(event.request).then((networkResponse) => {
+        // Simpan ke cache untuk penggunaan berikutnya
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);
           });
         }
         return networkResponse;
-      }).catch(() => {
-        // Jika jaringan gagal, gunakan cache (jika ada) atau biarkan gagal
-        console.warn(`[SW] Fetch failed, relying on cache for: ${event.request.url}`);
+      }).catch((error) => {
+        // 3. Jika offline dan gagal fetch, cek apakah ini navigasi halaman (HTML)
+        // Jika ya, berikan index.html dari cache sebagai fallback SPA
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+        
+        console.warn(`[SW] Offline fetch failed for: ${event.request.url}`);
+        throw error;
       });
-
-      // Kembalikan versi cache segera jika tersedia, atau tunggu jaringan
-      return cachedResponse || fetchPromise;
     })
   );
 });
