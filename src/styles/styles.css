@@ -138,6 +138,19 @@ body { background: var(--clr-bg); color: var(--clr-text); line-height: 1.6; }
   box-shadow: 0 2px 8px rgba(99,102,241,.35);
 }
 .btn-nav--register:hover { background: var(--clr-primary-dark); }
+.btn-nav--logout {
+  color: var(--clr-danger);
+  border: 1px solid var(--clr-danger);
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-nav--logout:hover {
+  background: var(--clr-danger);
+  color: white;
+}
 
 .drawer-button {
   display: none; background: none; border: none;

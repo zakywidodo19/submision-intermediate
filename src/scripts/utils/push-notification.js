@@ -118,15 +118,20 @@ export async function unsubscribePushNotification() {
 // Cek status subscription saat ini
 // ============================================================
 
-/**
- * Cek apakah browser saat ini sedang berlangganan push notification.
- * @returns {Promise<boolean>}
- */
 export async function isCurrentlySubscribed() {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) return false;
 
   try {
-    const registration = await navigator.serviceWorker.ready;
+    // Beri timeout 3 detik agar tidak hang jika SW gagal install
+    const swReady = new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('SW ready timeout')), 3000);
+      navigator.serviceWorker.ready.then((reg) => {
+        clearTimeout(timer);
+        resolve(reg);
+      });
+    });
+
+    const registration = await swReady;
     const subscription = await registration.pushManager.getSubscription();
     return !!subscription;
   } catch {

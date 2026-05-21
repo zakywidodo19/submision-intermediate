@@ -10,12 +10,12 @@ const CACHE_NAME = `ceritakita-app-shell-${SW_VERSION}`;
 
 // Aset yang akan disimpan di cache saat SW diinstall (App Shell)
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/favicon.png',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/app.webmanifest',
+  './',
+  './index.html',
+  './favicon.png',
+  './icon-192.png',
+  './icon-512.png',
+  './app.webmanifest',
 ];
 
 // ============================================================

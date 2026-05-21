@@ -74,6 +74,9 @@ class App {
 
     // [KRITERIA 1] Update tampilan navigasi aktif
     this.#updateActiveNavLink();
+    
+    // Perbarui navigasi Auth (Login/Register vs Logout)
+    this.#updateAuthNav();
   }
 
   /**
@@ -91,6 +94,33 @@ class App {
         link.removeAttribute('aria-current');
       }
     });
+  }
+
+  /**
+   * Mengubah tampilan auth-nav bergantung pada status login
+   */
+  #updateAuthNav() {
+    const authNav = document.getElementById('auth-nav');
+    if (!authNav) return;
+
+    const isLoggedIn = !!localStorage.getItem('authToken');
+
+    if (isLoggedIn) {
+      authNav.innerHTML = `
+        <button type="button" class="btn-nav btn-nav--logout" id="nav-logout">Logout</button>
+      `;
+
+      document.getElementById('nav-logout').addEventListener('click', () => {
+        localStorage.removeItem('authToken');
+        window.location.hash = '#/login';
+        this.renderPage(); // Paksa render ulang agar header terupdate
+      });
+    } else {
+      authNav.innerHTML = `
+        <a href="#/login" class="btn-nav btn-nav--login" id="nav-login">Masuk</a>
+        <a href="#/register" class="btn-nav btn-nav--register" id="nav-register">Daftar</a>
+      `;
+    }
   }
 }
 
